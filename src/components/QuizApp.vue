@@ -28,29 +28,29 @@
       <!-- Opening Frame -->
       <div v-if="currentStep === 'start'" class="text-center p-8 md:p-16">
         <!-- Logo -->
-        <img 
+        <!-- <img 
           :src="'/images/gamesense-logo.png'" 
           alt="GameSense" 
           class="h-16 mx-auto mb-4"
         />
-        <img 
+        <img
           :src="'/images/bclc-logo.png'" 
           alt="BCLC" 
           class="h-12 mx-auto mb-8"
-        />
+        /> -->
         
         <h1 class="text-4xl font-bold px-4 text-[#0B3B2D] mb-6">
           {{ quizData.openingFrame.headerText }}
         </h1>
 
         <!-- Description Text -->
-        <p class="text-lg text-[#0B3B2D] mb-6">
+        <!-- <p class="text-lg text-[#0B3B2D] mb-6">
           {{ quizData.openingFrame.descriptionText }}
         </p>
         
         <p class="text-lg text-[#0B3B2D] mb-8 font-medium">
           {{ quizData.openingFrame.ctaText }}
-        </p>
+        </p> -->
 
         <!-- Privacy Notice -->
         <p class="text-sm text-gray-600 mb-6 max-w-[240px] mx-auto">
@@ -71,7 +71,7 @@
       <!-- Questions -->
       <div v-else-if="currentStep === 'question'" class="question-container min-h-screen flex flex-col">
         <!-- Progress Bar -->
-        <div class="bg-[#0B3B2D] p-6 px-8">
+        <!-- <div class="bg-[#0B3B2D] p-6 px-8">
           <div class="flex items-center">
             <button @click.stop="toggleMenu" class="text-white menu-container">
               <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -87,7 +87,7 @@
               </div>
             </div>
           </div>
-        </div>
+        </div> -->
 
         <!-- Add menu dropdown -->
         <div v-if="showMenu" class="absolute top-[72px] left-0 bg-[#0B3B2D] text-white py-4 z-40 min-w-[200px] w-full menu-container">
@@ -130,24 +130,24 @@
                 <button
                   @click="selectAnswer(index)"
                   :disabled="showResults"
-                  class="relative w-full p-4 text-center rounded-xl border-2 border-[#0B3B2D] text-[#0B3B2D] text-2xl font-medium hover:bg-[#0B3B2D] hover:text-white transition-colors flex items-center"
+                  class="relative w-full p-4 text-center rounded-xl border-2 border-[#0B3B2D] text-[#0B3B2D] text-2xl font-medium transition-colors flex items-center"
                   :class="{
-                    'bg-green-100 border-green-600': showResults && answer.isCorrect,
-                    'bg-red-100 border-red-600': showResults && !answer.isCorrect && selectedAnswer === index
+                    'bg-[#0B3B2D] text-white': showResults && answer.isCorrect,
+                    '': showResults && !answer.isCorrect && selectedAnswer === index
                   }"
                 >
                   <span class="flex-1">{{ answer.text }}</span>
                   <div class="absolute top-0 right-0 p-[18px] z-10">
-                    <span v-if="showResults && answer.isCorrect" class="text-green-600">
-                      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                    <div v-if="showResults && answer.isCorrect" class="w-7 h-7 flex items-center justify-center bg-white text-green-600 rounded-full">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-width="3" d="M5 13l4 4L19 7" />
                       </svg>
-                    </span>
-                    <span v-if="showResults && !answer.isCorrect && selectedAnswer === index" class="text-red-600">
-                      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </div>
+                    <div v-if="showResults && !answer.isCorrect && selectedAnswer === index" class="w-7 h-7 flex items-center justify-center bg-red-600 text-white rounded-full">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-width="3" d="M6 18L18 6M6 6l12 12" />
                       </svg>
-                    </span>
+                    </div>
                   </div>
                 </button>
               </div>
@@ -258,15 +258,49 @@ export default {
       try {
         const response = await fetch(this.quizSource)
         this.quizData = await response.json()
+        this.initializeGTM(this.quizData.gtmId)
       } catch (error) {
         console.error('Error loading quiz data:', error)
       }
+    },
+    initializeGTM(gtmId) {
+      // Create and inject GTM script
+      const script = document.createElement('script')
+      script.innerHTML = `
+        window.dataLayer = window.dataLayer || [];
+        (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+        new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+        j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+        'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+        })(window,document,'script','dataLayer','${gtmId}');
+      `
+      document.head.appendChild(script)
+
+      // Create and inject GTM noscript iframe
+      const noscript = document.createElement('noscript')
+      const iframe = document.createElement('iframe')
+      iframe.src = `https://www.googletagmanager.com/ns.html?id=${gtmId}`
+      iframe.height = '0'
+      iframe.width = '0'
+      iframe.style.display = 'none'
+      iframe.style.visibility = 'hidden'
+      noscript.appendChild(iframe)
+      document.body.insertBefore(noscript, document.body.firstChild)
     },
     startQuiz() {
       this.currentStep = 'question'
       this.currentQuestionIndex = 0
       this.userAnswers = []
       this.correctAnswers = 0
+
+      // Track quiz start
+      window.dataLayer.push({
+        'event': 'rg_games',
+        'status': 'game_start',
+        'game_name': 'facts_from_fiction',
+        'step': 0,
+        'step_response': 'start'
+      })
     },
     selectAnswer(index) {
       if (this.showResults) return
@@ -282,6 +316,15 @@ export default {
         selectedAnswer: index,
         isCorrect: this.currentQuestion.answers[index].isCorrect
       })
+
+      // Add Google Analytics tracking
+      window.dataLayer.push({
+        'event': 'rg_games',
+        'status': 'game_in_progress',
+        'game_name': 'facts_from_fiction',
+        'step': this.currentQuestionIndex + 1,
+        'step_response': this.currentQuestion.answers[index].text
+      })
     },
     nextQuestion() {
       this.showResults = false
@@ -289,6 +332,14 @@ export default {
       
       if (this.isLastQuestion) {
         this.currentStep = 'end'
+        // Track quiz completion
+        window.dataLayer.push({
+          'event': 'rg_games',
+          'status': 'game_complete',
+          'game_name': 'facts_from_fiction',
+          'step': this.quizData.questions.length + 1,
+          'step_response': `${this.correctAnswers}/${this.quizData.questions.length}`
+        })
       } else {
         this.currentQuestionIndex++
       }

@@ -1,4 +1,5 @@
 {
+  "gtmId": "GTM-XXXXXX",
   "openingFrame": {
     "backgroundImage": "/images/quiz-background.jpg",
     "headerText": "Can you separate gambling facts from fiction?",
