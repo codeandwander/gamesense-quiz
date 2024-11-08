@@ -108,9 +108,9 @@
         <div class="p-8 md:p-16 flex-1 flex justify-center">
           <div>
             <!-- Question Image -->
-            <div class="hidden md:flex items-center justify-center mb-8">
+            <!-- <div class="hidden md:flex items-center justify-center mb-8">
               <img :src="currentQuestion.image" alt="Question Image" class="w-full max-w-[400px]">
-            </div>
+            </div> -->
 
             <!-- Question Counter -->
             <div class="flex items-center justify-center mb-8">
