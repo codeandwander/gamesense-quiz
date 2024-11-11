@@ -1,13 +1,7 @@
 {
   "gtmId": "GTM-XXXXXX",
-  "openingFrame": {
-    "backgroundImage": "/images/quiz-background.jpg",
-    "headerText": "Can you separate gambling facts from fiction?",
-    "descriptionText": "Test your knowledge using our quick and easy gambling myths quiz to see how well you know fact from fiction.",
-    "ctaText": "After learning more about the myths of gambling, you can enter for a chance to win a $100 VISA Gift Card at the end of the quiz!",
-    "privacyUrl": "https://www.bclc.com/privacy-notice",
-    "termsUrl": "https://www.bclc.com/terms-of-use"
-  },
+  "title": "Can you separate gambling facts from fiction?",
+  "backgroundImage": "/images/bg.jpg",
   "questions": [
     {
       "questionText": "Some slots are 'hot' and due for a big jackpot.",
@@ -15,31 +9,35 @@
       "answers": [
         {
           "text": "True",
-          "isCorrect": false,
-          "responseText": "The reality is slots don’t get “hot” or “cold.” Slot machines use a random number generator to determine the outcome of each play. When you lose or win several times in a row, it’s purely random."
+          "isCorrect": false
         },
         {
           "text": "False",
-          "isCorrect": true,
-          "responseText": "You got it! Slot machines use a random number generator to determine the outcome of each play. When you lose or win several times in a row, it’s purely random."
+          "isCorrect": true
         }
-      ]
+      ],
+      "responses": {
+        "correct": "You got it! Slot machines use a random number generator to determine the outcome of each play. When you lose or win several times in a row, it's purely random.",
+        "incorrect": "The reality is slots don't get 'hot' or 'cold.' Slot machines use a random number generator to determine the outcome of each play. When you lose or win several times in a row, it's purely random."
+      }
     },
     {
-      "questionText": "If I play a slot machine that has a payout rate of 85%, I’ll win $85 for every $100 I bet.",
+      "questionText": "If I play a slot machine that has a payout rate of 85%, I'll win $85 for every $100 I bet.",
       "image": "/images/question.png",
       "answers": [
         {
           "text": "True",
-          "isCorrect": false,
-          "responseText": "The reality is that a slot machine's payout percentage is averaged over the course of its lifetime, not in one session. Due to random number generation, it's impossible to predict when a jackpot will hit."
+          "isCorrect": false
         },
         {
           "text": "False",
-          "isCorrect": true,
-          "responseText": "Nice work! A slot machine's payout percentage is averaged over the course of its lifetime, not in one session. Due to random number generation, it's impossible to predict when a jackpot will hit."
+          "isCorrect": true
         }
-      ]
+      ],
+      "responses": {
+        "correct": "Nice work! A slot machine's payout percentage is averaged over the course of its lifetime, not in one session. Due to random number generation, it's impossible to predict when a jackpot will hit.",
+        "incorrect": "The reality is that a slot machine's payout percentage is averaged over the course of its lifetime, not in one session. Due to random number generation, it's impossible to predict when a jackpot will hit."
+      }
     },
     {
       "questionText": "Picking my own lottery numbers increases my chances of winning.",
@@ -47,15 +45,17 @@
       "answers": [
         {
           "text": "True",
-          "isCorrect": false,
-          "responseText": "The reality is that the outcomes of games like Lotto 6/49 are completely random. No numbers or strategies can influence the result.  Every number has an equal chance of being drawn, whether you pick it or a computer randomly picks it for you."
+          "isCorrect": false
         },
         {
           "text": "False",
-          "isCorrect": true,
-          "responseText": "You nailed it! The outcomes of games like Lotto 6/49 are completely random. No numbers or strategies can influence the result. Every number has an equal chance of being drawn, whether you pick it or a computer randomly picks it for you."
+          "isCorrect": true
         }
-      ]
+      ],
+      "responses": {
+        "correct": "You nailed it! The outcomes of games like Lotto 6/49 are completely random. No numbers or strategies can influence the result. Every number has an equal chance of being drawn, whether you pick it or a computer randomly picks it for you.",
+        "incorrect": "The reality is that the outcomes of games like Lotto 6/49 are completely random. No numbers or strategies can influence the result. Every number has an equal chance of being drawn, whether you pick it or a computer randomly picks it for you."
+      }
     },
     {
       "questionText": "Gambling can be a fun activity, and it should never be a source of income.",
@@ -63,47 +63,53 @@
       "answers": [
         {
           "text": "True",
-          "isCorrect": false,
-          "responseText": "That’s correct! Gambling is a form of entertainment, like going to the movies, not a way of making money. Remember that the odds are against you, and you should only gamble with a budgeted amount set aside for fun."
+          "isCorrect": false
         },
         {
           "text": "False",
-          "isCorrect": true,
-          "responseText": "Gambling is a form of entertainment, like going to the movies, not a way of making money. Remember that the odds are against you, and you should only gamble with a budgeted amount set aside for fun."
+          "isCorrect": true
         }
-      ]
+      ],
+      "responses": {
+        "correct": "That's correct! Gambling is a form of entertainment, like going to the movies, not a way of making money. Remember that the odds are against you, and you should only gamble with a budgeted amount set aside for fun.",
+        "incorrect": "Gambling is a form of entertainment, like going to the movies, not a way of making money. Remember that the odds are against you, and you should only gamble with a budgeted amount set aside for fun."
+      }
     },
     {
-      "questionText": "Games like the lottery, horse racing, or bingo aren’t considered gambling.",
+      "questionText": "Games like the lottery, horse racing, or bingo aren't considered gambling.",
       "image": "/images/question.png",
       "answers": [
         {
           "text": "True",
-          "isCorrect": false,
-          "responseText": "The reality is that lottery games, horse racing, bingo, and similar activities are all forms of gambling. The results are never certain and losing is always a possibility."
+          "isCorrect": false
         },
         {
           "text": "False",
-          "isCorrect": true,
-          "responseText": "Correct! Lottery games, horse racing, bingo, and similar activities are all forms of gambling. The results are never certain and losing is always a possibility."
+          "isCorrect": true
         }
-      ]
+      ],
+      "responses": {
+        "correct": "Correct! Lottery games, horse racing, bingo, and similar activities are all forms of gambling. The results are never certain and losing is always a possibility.",
+        "incorrect": "The reality is that lottery games, horse racing, bingo, and similar activities are all forms of gambling. The results are never certain and losing is always a possibility."
+      }
     },
     {
-      "questionText": "It’s possible to lose more money than I planned without setting limits.",
+      "questionText": "It's possible to lose more money than I planned without setting limits.",
       "image": "/images/question.png",
       "answers": [
         {
           "text": "True",
-          "isCorrect": false,
-          "responseText": "Exactly. Without setting a budget before playing, it can be easy to lose more money than planned. Keep gambling fun by only playing with money you can afford to lose and sticking to your limit."
+          "isCorrect": false
         },
         {
           "text": "False",
-          "isCorrect": true,
-          "responseText": "Actually without setting a budget before playing, it can be easy to lose more money than planned. Keep gambling fun by only playing with money you can afford to lose and sticking to your limit."
+          "isCorrect": true
         }
-      ]
+      ],
+      "responses": {
+        "correct": "Exactly. Without setting a budget before playing, it can be easy to lose more money than planned. Keep gambling fun by only playing with money you can afford to lose and sticking to your limit.",
+        "incorrect": "Actually without setting a budget before playing, it can be easy to lose more money than planned. Keep gambling fun by only playing with money you can afford to lose and sticking to your limit."
+      }
     },
     {
       "questionText": "There are special strategies that can increase my chances of winning at games, like the lottery.",
@@ -111,15 +117,17 @@
       "answers": [
         {
           "text": "True",
-          "isCorrect": false,
-          "responseText": "The reality is no strategy can overcome the house advantage or beat the odds, as all games of chance are based on randomness. Often these strategies lead to bigger losses by encouraging more betting."
+          "isCorrect": false
         },
         {
           "text": "False",
-          "isCorrect": true,
-          "responseText": "Great work. No strategy can overcome the house advantage or beat the odds, as all games of chance are based on randomness. Often these strategies lead to bigger losses by encouraging more betting."
+          "isCorrect": true
         }
-      ]
+      ],
+      "responses": {
+        "correct": "Great work. No strategy can overcome the house advantage or beat the odds, as all games of chance are based on randomness. Often these strategies lead to bigger losses by encouraging more betting.",
+        "incorrect": "The reality is no strategy can overcome the house advantage or beat the odds, as all games of chance are based on randomness. Often these strategies lead to bigger losses by encouraging more betting."
+      }
     },
     {
       "questionText": "Casinos has the house advantage and the odds are generally against me.",
@@ -127,21 +135,22 @@
       "answers": [
         {
           "text": "True",
-          "isCorrect": false,
-          "responseText": "You got it. All forms of gambling favor the house, including slots, table games, and the lottery. The longer you play, the more likely you are to lose money."
+          "isCorrect": false
         },
         {
           "text": "False",
-          "isCorrect": true,
-          "responseText": "The reality is that all forms of gambling favor the house, including slots, table games, and the lottery. The longer you play, the more likely you are to lose money."
+          "isCorrect": true
         }
-      ]
+      ],
+      "responses": {
+        "correct": "You got it. All forms of gambling favor the house, including slots, table games, and the lottery. The longer you play, the more likely you are to lose money.",
+        "incorrect": "The reality is that all forms of gambling favor the house, including slots, table games, and the lottery. The longer you play, the more likely you are to lose money."
+      }
     }
   ],
   "endFrame": {
     "text": "Thanks for taking our gambling myths quiz!",
     "scoreResponses": {
-      "sameForAll": false,
       "ranges": [
         {
           "min": 0,
@@ -156,14 +165,20 @@
         {
           "min": 67,
           "max": 100,
-          "text": "Well done, looks like you’ve got a good handle on knowing your gambling myths."
+          "text": "Well done, looks like you've got a good handle on knowing your gambling myths."
         }
       ]
     },
     "cta1": {
       "text": "Enter to win a $100 VISA gift card. Use it on some non-gambling activities as a reminder to balance gambling with other hobbies.",
-      "buttonText": "Enter now"
+      "buttonText": "Enter now",
+      "buttonLink": "https://www.bclc.com/en/responsible-gaming/responsible-gaming-resources/game-sense-quiz"
+    },
+    "footer": {
+      "text": "Want to continue learning about healthy gambling habits?",
+      "subtext": "Get tips, tools and resources to help you keep gambling fun.",
+      "buttonText": "Learn more",
+      "buttonLink": "https://www.bclc.com/en/responsible-gaming/responsible-gaming-resources/game-sense-quiz"
     }
-  },
-  "aboutText": "The GameSense Quiz is a fun and interactive way to learn about gambling myths and the realities of gambling. It's designed to help you understand the myths and realities of gambling, and to encourage you to gamble responsibly. The quiz is not a test of your gambling knowledge, but rather an opportunity to learn and make informed decisions about gambling."
+  }
 }

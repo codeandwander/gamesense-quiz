@@ -1,63 +1,12 @@
 // QuizApp.vue
 <template>
-  <div class="quiz-container bg-[#F4F6F5] bg-[url('/images/bg.jpg')] bg-cover bg-center font-fort">
-    <!-- Add modal component -->
-    <div v-if="showAboutModal" class="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
-      <div class="bg-white rounded-lg max-w-md w-full p-6">
-        <div class="flex justify-between items-center mb-4">
-          <h3 class="text-xl font-bold">About the test</h3>
-          <button @click="showAboutModal = false" class="text-gray-500 hover:text-gray-700">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-            </svg>
-          </button>
-        </div>
-        <p class="text-gray-700 mb-4">
-          {{ quizData?.aboutText }}
-        </p>
-        <button 
-          @click="showAboutModal = false"
-          class="w-full bg-[#76B900] text-white px-4 py-2 rounded hover:bg-[#86C100] uppercase font-bold"
-        >
-          CLOSE
-        </button>
-      </div>
-    </div>
-
-    <div class="relative max-w-3xl mx-auto bg-white min-h-screen">
+  <div class="quiz-container bg-[#F4F6F5]" :class="{'bg-cover bg-center font-fort text-balance': true}" :style="{ backgroundImage: quizData ? `url(${quizData.backgroundImage})` : 'none' }">
+    <div class="relative max-w-3xl mx-auto bg-white h-screen flex flex-col items-center">
       <!-- Opening Frame -->
       <div v-if="currentStep === 'start'" class="text-center p-8 md:p-16">
-        <!-- Logo -->
-        <!-- <img 
-          :src="'/images/gamesense-logo.png'" 
-          alt="GameSense" 
-          class="h-16 mx-auto mb-4"
-        />
-        <img
-          :src="'/images/bclc-logo.png'" 
-          alt="BCLC" 
-          class="h-12 mx-auto mb-8"
-        /> -->
-        
         <h1 class="text-4xl font-bold px-4 text-[#0B3B2D] mb-6">
-          {{ quizData.openingFrame.headerText }}
+          {{ quizData.title }}
         </h1>
-
-        <!-- Description Text -->
-        <!-- <p class="text-lg text-[#0B3B2D] mb-6">
-          {{ quizData.openingFrame.descriptionText }}
-        </p>
-        
-        <p class="text-lg text-[#0B3B2D] mb-8 font-medium">
-          {{ quizData.openingFrame.ctaText }}
-        </p> -->
-
-        <!-- Privacy Notice -->
-        <p class="text-sm text-gray-600 mb-6 max-w-[240px] mx-auto">
-          By starting this test, you accept the
-          <a :href="quizData.openingFrame.privacyUrl" class="underline">Privacy Notice</a> and 
-          <a :href="quizData.openingFrame.termsUrl" class="underline">Terms of Use</a>
-        </p>
 
         <!-- Start Button -->
         <button 
@@ -70,24 +19,6 @@
 
       <!-- Questions -->
       <div v-else-if="currentStep === 'question'" class="question-container min-h-screen flex flex-col">
-        <!-- Progress Bar -->
-        <!-- <div class="bg-[#0B3B2D] p-6 px-8">
-          <div class="flex items-center">
-            <button @click.stop="toggleMenu" class="text-white menu-container">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-              </svg>
-            </button>
-            <div class="w-full mx-4">
-              <div class="bg-white/20 h-2 rounded-full">
-                <div 
-                  class="bg-[#76B900] h-2 rounded-full transition-all duration-300" 
-                  :style="`width: ${((currentQuestionIndex + 1) / quizData.questions.length) * 100}%`"
-                ></div>
-              </div>
-            </div>
-          </div>
-        </div> -->
 
         <!-- Add menu dropdown -->
         <div v-if="showMenu" class="absolute top-[72px] left-0 bg-[#0B3B2D] text-white py-4 z-40 min-w-[200px] w-full menu-container">
@@ -107,11 +38,6 @@
 
         <div class="p-8 md:p-16 flex-1 flex justify-center">
           <div>
-            <!-- Question Image -->
-            <!-- <div class="hidden md:flex items-center justify-center mb-8">
-              <img :src="currentQuestion.image" alt="Question Image" class="w-full max-w-[400px]">
-            </div> -->
-
             <!-- Question Counter -->
             <div class="flex items-center justify-center mb-8">
               <span class="bg-[#0B3B2D] text-white px-2 py-1 text-lg font-bold">
@@ -156,7 +82,7 @@
             <!-- Answer Feedback -->
             <div v-if="showResults" class="text-center text-[#0B3B2D] mt-8">
               <p class="text-lg">
-                {{ currentQuestion.answers[selectedAnswer].responseText }}
+                {{ getResponseText() }}
               </p>
             </div>
           </div>
@@ -177,9 +103,9 @@
       </div>
 
       <!-- End Frame -->
-      <div v-else-if="currentStep === 'end'">
+      <div v-else-if="currentStep === 'end'" class="h-screen flex flex-col">
 
-        <div class="text-center p-8 md:p-16">
+        <div class="text-center p-8 md:p-16 flex-1 flex flex-col">
           <!-- End of quiz label -->
           <div class="flex items-center justify-center mb-8">
             <span class="bg-[#0B3B2D] text-white px-2 py-1 text-lg font-bold">
@@ -200,23 +126,25 @@
             <!-- CTAs -->
             <div class="flex flex-col gap-4">
               <div v-if="quizData.endFrame.cta1.text || quizData.endFrame.cta1.buttonText">
-                <p class="mb-4 font-medium">{{ quizData.endFrame.cta1.text }}</p>
-                <button 
+                <p class="mb-8 font-medium">{{ quizData.endFrame.cta1.text }}</p>
+                <a 
                   v-if="quizData.endFrame.cta1.buttonText"
-                  @click="handleCTA(1)"
+                  :href="quizData.endFrame.cta1.buttonLink"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   class="bg-[#76B900] text-white px-6 py-2 hover:bg-[#86C100] uppercase font-bold"
                 >
                   {{ quizData.endFrame.cta1.buttonText }}
-                </button>
+                </a>
               </div>
             </div>
           </div>
         </div>
 
         <div class="px-16 py-8 bg-[#C2C2C2] flex flex-col gap-1 items-center justify-center text-[#154734]">
-          <span class="font-bold">Want to continue learning about healthy gambling habits?</span>
-          <span class="text-lg font-medium">Get tips, tools and resources to help you keep gambling fun.</span>
-          <a href="https://www.bclc.ca/gamesense" class="underline font-bold">Learn more</a>
+          <span class="font-bold">{{ quizData.endFrame.footer.text }}</span>
+          <span class="text-lg font-medium">{{ quizData.endFrame.footer.subtext }}</span>
+          <a :href="quizData.endFrame.footer.buttonLink" class="underline font-bold">{{ quizData.endFrame.footer.buttonText }}</a>
         </div>
       </div>
     </div>
@@ -357,14 +285,6 @@ export default {
         percentage >= range.min && percentage <= range.max
       )?.text || ''
     },
-    handleCTA(ctaNumber) {
-      // Emit event for parent component to handle
-      this.$emit('cta-clicked', {
-        ctaNumber,
-        score: this.correctAnswers,
-        total: this.quizData.questions.length
-      })
-    },
     toggleMenu() {
       this.showMenu = !this.showMenu
     },
@@ -375,6 +295,12 @@ export default {
     handleAboutClick() {
       this.showMenu = false
       this.showAboutModal = true
+    },
+    getResponseText() {
+      const isCorrect = this.currentQuestion.answers[this.selectedAnswer].isCorrect
+      return isCorrect ? 
+        this.currentQuestion.responses.correct : 
+        this.currentQuestion.responses.incorrect
     },
   },
   created() {
