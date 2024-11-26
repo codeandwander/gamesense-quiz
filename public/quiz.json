@@ -5,7 +5,6 @@
   "questions": [
     {
       "questionText": "Some slots are 'hot' and due for a big jackpot.",
-      "image": "/images/question.png",
       "answers": [
         {
           "text": "True",
@@ -41,7 +40,6 @@
     },
     {
       "questionText": "Picking my own lottery numbers increases my chances of winning.",
-      "image": "/images/question.png",
       "answers": [
         {
           "text": "True",
@@ -59,7 +57,6 @@
     },
     {
       "questionText": "Gambling can be a fun activity, and it should never be a source of income.",
-      "image": "/images/question.png",
       "answers": [
         {
           "text": "True",
@@ -77,7 +74,6 @@
     },
     {
       "questionText": "Games like the lottery, horse racing, or bingo aren't considered gambling.",
-      "image": "/images/question.png",
       "answers": [
         {
           "text": "True",
@@ -95,7 +91,6 @@
     },
     {
       "questionText": "It's possible to lose more money than I planned without setting limits.",
-      "image": "/images/question.png",
       "answers": [
         {
           "text": "True",
@@ -113,7 +108,6 @@
     },
     {
       "questionText": "There are special strategies that can increase my chances of winning at games, like the lottery.",
-      "image": "/images/question.png",
       "answers": [
         {
           "text": "True",
@@ -131,7 +125,6 @@
     },
     {
       "questionText": "Casinos has the house advantage and the odds are generally against me.",
-      "image": "/images/question.png",
       "answers": [
         {
           "text": "True",

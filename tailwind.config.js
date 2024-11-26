@@ -8,6 +8,7 @@ module.exports = {
     extend: {
       fontFamily: {
         'fort': ['Fort', 'sans-serif'],
+        'gameSense-hand': ['GameSense-Hand', 'sans-serif'],
       },
     },
   },

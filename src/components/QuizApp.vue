@@ -1,76 +1,78 @@
 // QuizApp.vue
 <template>
-  <div class="quiz-container bg-[#F4F6F5]" :class="{'bg-cover bg-center font-fort text-balance': true}" :style="{ backgroundImage: quizData ? `url(${quizData.backgroundImage})` : 'none' }">
-    <div class="relative max-w-3xl mx-auto bg-white h-screen flex flex-col items-center">
+  <div class="quiz-container bg-[#F3F6F5] font-fort"
+    :class="{'bg-[#76B900] bg-repeat text-balance': currentStep === 'start'}"
+    :style="{ backgroundImage: currentStep === 'start' ? `url(${quizData.backgroundImage})` : 'none' }">
+    <div class="relative max-w-3xl mx-auto h-screen flex flex-col justify-center items-center">
       <!-- Opening Frame -->
       <div v-if="currentStep === 'start'" class="text-center p-8 md:p-16">
-        <h1 class="text-4xl font-bold px-4 text-[#0B3B2D] mb-6">
+        <h1 class="text-5xl font-bold px-4 text-white mb-6 font-gameSense-hand">
           {{ quizData.title }}
         </h1>
 
         <!-- Start Button -->
-        <button 
-          @click="startQuiz" 
-          class="bg-[#76B900] text-white px-6 py-2 hover:bg-[#86C100] uppercase font-bold"
-        >
-          Start
+        <button @click="startQuiz"
+          class="bg-white text-[#154734] px-5 py-2 hover:bg-[#154734] hover:text-white font-medium rounded transition-all">
+          Start Quiz
         </button>
       </div>
 
       <!-- Questions -->
-      <div v-else-if="currentStep === 'question'" class="question-container min-h-screen flex flex-col">
+      <div v-else-if="currentStep === 'question'"
+        class="question-container min-h-screen flex flex-col items-center justify-end">
 
         <!-- Add menu dropdown -->
-        <div v-if="showMenu" class="absolute top-[72px] left-0 bg-[#0B3B2D] text-white py-4 z-40 min-w-[200px] w-full menu-container">
-          <button 
-            @click="handleStartOver" 
-            class="w-full text-left px-8 py-4 hover:bg-[#154734]"
-          >
+        <div v-if="showMenu"
+          class="absolute top-[72px] left-0 bg-[rgb(11,59,45)] text-white py-4 z-40 min-w-[200px] w-full menu-container">
+          <button @click="handleStartOver" class="w-full text-left px-8 py-4 hover:bg-[#154734]">
             Start over
           </button>
-          <button 
-            @click="handleAboutClick" 
-            class="w-full text-left px-8 py-4 hover:bg-[#154734]"
-          >
+          <button @click="handleAboutClick" class="w-full text-left px-8 py-4 hover:bg-[#154734]">
             About this test
           </button>
         </div>
 
-        <div class="p-8 md:p-16 flex-1 flex justify-center">
+        <div class="p-8 md:p-16 flex-1 flex items-center justify-center">
           <div>
             <!-- Question Counter -->
             <div class="flex items-center justify-center mb-8">
-              <span class="bg-[#0B3B2D] text-white px-2 py-1 text-lg font-bold">
-                QUESTION {{currentQuestionIndex + 1}}/{{quizData.questions.length}}
+              <span class="bg-[#E5EBE9] text-[#4A4A4A] px-3 py-1 text-lg rounded">
+                Question {{currentQuestionIndex + 1}}/{{quizData.questions.length}}
               </span>
             </div>
 
+            <!-- Question Image -->
+            <div v-if="currentQuestion.image" class="flex justify-center">
+              <img :src="currentQuestion.image" alt="Question Image" class="mb-8" />
+            </div>
+
             <!-- Question Text -->
-            <h2 class="text-[#0B3B2D] text-3xl font-bold mb-8 text-center">
+            <h2 class="text-[#4A4A4A] text-3xl mb-8 text-center text-balance">
               {{ currentQuestion.questionText }}
             </h2>
 
             <!-- Answer Options -->
-            <div class="flex flex-col md:flex-row gap-4">
+            <div class="flex flex-col sm:flex-row gap-4 sm:px-16">
               <div v-for="(answer, index) in currentQuestion.answers" :key="index" class="w-full">
-                <button
-                  @click="selectAnswer(index)"
-                  :disabled="showResults"
-                  class="relative w-full p-4 text-center rounded-xl border-2 border-[#0B3B2D] text-[#0B3B2D] text-2xl font-medium transition-colors flex items-center"
+                <button @click="selectAnswer(index)" :disabled="showResults"
+                  class="relative w-full p-3 text-center rounded border border-[#4A4A4A] text-lg transition-colors flex items-center"
                   :class="{
                     'bg-[#0B3B2D] text-white': showResults && answer.isCorrect,
-                    '': showResults && !answer.isCorrect && selectedAnswer === index
-                  }"
-                >
+                    'text-[#4A4A4A]': showResults && !answer.isCorrect && selectedAnswer === index
+                  }">
                   <span class="flex-1">{{ answer.text }}</span>
-                  <div class="absolute top-0 right-0 p-[18px] z-10">
-                    <div v-if="showResults && answer.isCorrect" class="w-7 h-7 flex items-center justify-center bg-white text-green-600 rounded-full">
-                      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <div class="absolute top-0 right-0 p-[14px] z-10">
+                    <div v-if="showResults && answer.isCorrect"
+                      class="w-6 h-6 flex items-center justify-center bg-white text-green-600 rounded-full">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor">
                         <path stroke-width="3" d="M5 13l4 4L19 7" />
                       </svg>
                     </div>
-                    <div v-if="showResults && !answer.isCorrect && selectedAnswer === index" class="w-7 h-7 flex items-center justify-center bg-red-600 text-white rounded-full">
-                      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <div v-if="showResults && !answer.isCorrect && selectedAnswer === index"
+                      class="w-6 h-6 flex items-center justify-center bg-red-600 text-white rounded-full">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor">
                         <path stroke-width="3" d="M6 18L18 6M6 6l12 12" />
                       </svg>
                     </div>
@@ -78,75 +80,71 @@
                 </button>
               </div>
             </div>
-            
+
             <!-- Answer Feedback -->
-            <div v-if="showResults" class="text-center text-[#0B3B2D] mt-8">
-              <p class="text-lg">
+            <div v-if="showResults" class="text-center text-[#4A4A4A] mt-8">
+              <p class="text-lg text-balance">
                 {{ getResponseText() }}
               </p>
             </div>
+
+            <div class="px-16 py-8 flex justify-center">
+              <!-- Next Question Button -->
+              <button @click="nextQuestion" :disabled="!showResults"
+                class="bg-[#76B900] text-white px-5 py-2 text-lg rounded disabled:opacity-50 disabled:cursor-not-allowed"
+                :class="{'hover:bg-[#86C100]': showResults}">
+                Next question
+              </button>
+            </div>
           </div>
         </div>
 
 
-        <div class="px-16 py-8 bg-[#C2C2C2] flex justify-center">
-          <!-- Next Question Button -->
-          <button
-            @click="nextQuestion"
-            :disabled="!showResults"
-            class="bg-[#76B900] text-white p-4 leading-none text-lg font-medium disabled:opacity-50 disabled:cursor-not-allowed"
-            :class="{'hover:bg-[#86C100]': showResults}"
-          >
-            NEXT QUESTION
-          </button>
-        </div>
       </div>
+      <div v-else-if="currentStep === 'end'" class="h-screen flex flex-col justify-center">
 
-      <!-- End Frame -->
-      <div v-else-if="currentStep === 'end'" class="h-screen flex flex-col">
-
-        <div class="text-center p-8 md:p-16 flex-1 flex flex-col">
+        <div class="text-center p-4 md:p-16 flex-1 flex flex-col justify-center">
           <!-- End of quiz label -->
           <div class="flex items-center justify-center mb-8">
-            <span class="bg-[#0B3B2D] text-white px-2 py-1 text-lg font-bold">
-              END OF QUIZ
+            <span class="bg-[#E5EBE9] text-[#4A4A4A] px-3 py-1 text-lg rounded">
+              End of quiz
             </span>
           </div>
 
-          <h2 class="text-[#0B3B2D] text-3xl font-bold mb-8 text-center">{{ quizData.endFrame.text }}</h2>
+          <h2 class="text-[#4A4A4A] text-4xl mb-8 text-center text-balance">{{ quizData.endFrame.text }}</h2>
 
-          <div class="py-4 px-8 md:py-8 md:px-16 bg-[#154734] rounded-xl text-white">
-            
-            <div class="text-2xl font-semibold mb-4">
+          <div class="p-8 bg-[#154734] text-white rounded mb-4">
+
+            <div class="text-lg mb-1 text-[#76B900]">
               You got {{ correctAnswers }} out of {{ quizData.questions.length }} questions correct
             </div>
 
-            <p class="mb-6">{{ getScoreResponse() }}</p>
+            <p class="mb-6 text-2xl font-medium">{{ getScoreResponse() }}</p>
 
             <!-- CTAs -->
             <div class="flex flex-col gap-4">
               <div v-if="quizData.endFrame.cta1.text || quizData.endFrame.cta1.buttonText">
-                <p class="mb-8 font-medium">{{ quizData.endFrame.cta1.text }}</p>
-                <a 
-                  v-if="quizData.endFrame.cta1.buttonText"
-                  :href="quizData.endFrame.cta1.buttonLink"
-                  target="_blank"
+                <p class="mb-8">{{ quizData.endFrame.cta1.text }}</p>
+                <a v-if="quizData.endFrame.cta1.buttonText" :href="quizData.endFrame.cta1.buttonLink" target="_blank"
                   rel="noopener noreferrer"
-                  class="bg-[#76B900] text-white px-6 py-2 hover:bg-[#86C100] uppercase font-bold"
-                >
+                  class="bg-[#76B900] text-white px-6 py-3 font-medium hover:bg-[#86C100] rounded inline-block">
                   {{ quizData.endFrame.cta1.buttonText }}
                 </a>
               </div>
             </div>
           </div>
-        </div>
 
-        <div class="px-16 py-8 bg-[#C2C2C2] flex flex-col gap-1 items-center justify-center text-[#154734]">
-          <span class="font-bold">{{ quizData.endFrame.footer.text }}</span>
-          <span class="text-lg font-medium">{{ quizData.endFrame.footer.subtext }}</span>
-          <a :href="quizData.endFrame.footer.buttonLink" class="underline font-bold">{{ quizData.endFrame.footer.buttonText }}</a>
+          <div
+            class="px-4 py-8 bg-white flex flex-col gap-1 items-center justify-center text-[#4A4A4A] rounded text-balance">
+            <span class="font-medium">{{ quizData.endFrame.footer.text }}</span>
+            <span class="">{{ quizData.endFrame.footer.subtext }}</span>
+            <a :href="quizData.endFrame.footer.buttonLink" class="font-medium text-[#86C100]">{{
+              quizData.endFrame.footer.buttonText }}</a>
+          </div>
         </div>
       </div>
+
+      <!-- End Frame -->
     </div>
   </div>
 </template>
