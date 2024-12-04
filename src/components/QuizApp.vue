@@ -272,15 +272,15 @@ export default {
     },
     getScoreResponse() {
       const scoreResponses = this.quizData.endFrame.scoreResponses
-      const percentage = (this.correctAnswers / this.quizData.questions.length) * 100
+      const correctAnswers = this.correctAnswers
       
       if (scoreResponses.sameForAll) {
         return scoreResponses.text
       }
       
-      // Find appropriate response based on score ranges
+      // Find appropriate response based on absolute score ranges
       return scoreResponses.ranges.find(range => 
-        percentage >= range.min && percentage <= range.max
+        correctAnswers >= range.min && correctAnswers <= range.max
       )?.text || ''
     },
     toggleMenu() {

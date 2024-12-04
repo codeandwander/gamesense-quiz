@@ -21,8 +21,7 @@
       }
     },
     {
-      "questionText": "If I play a slot machine that has a payout rate of 85%, I'll win $85 for every $100 I bet.",
-      "image": "/images/question.png",
+      "questionText": "If I play a slot machine that has a payout rate of 92%, I'll win $92 for every $100 I bet.",
       "answers": [
         {
           "text": "True",
@@ -60,11 +59,11 @@
       "answers": [
         {
           "text": "True",
-          "isCorrect": false
+          "isCorrect": true
         },
         {
           "text": "False",
-          "isCorrect": true
+          "isCorrect": false
         }
       ],
       "responses": {
@@ -94,11 +93,11 @@
       "answers": [
         {
           "text": "True",
-          "isCorrect": false
+          "isCorrect": true
         },
         {
           "text": "False",
-          "isCorrect": true
+          "isCorrect": false
         }
       ],
       "responses": {
@@ -128,11 +127,11 @@
       "answers": [
         {
           "text": "True",
-          "isCorrect": false
+          "isCorrect": true
         },
         {
           "text": "False",
-          "isCorrect": true
+          "isCorrect": false
         }
       ],
       "responses": {
@@ -147,25 +146,30 @@
       "ranges": [
         {
           "min": 0,
-          "max": 33,
-          "text": "Looks like you could learn more about gambling myths and ways to keep gambling fun."
+          "max": 3,
+          "text": "It's probably time to learn about the reality behind some of the most common gambling myths."
         },
         {
-          "min": 34,
-          "max": 66,
-          "text": "Keep with it and brush up on knowing your gambling myths to keep gambling fun."
+          "min": 4,
+          "max": 6,
+          "text": "Good effort! You know a lot about gambling myths, but it doesn't hurt to brush up on your knowledge."
         },
         {
-          "min": 67,
-          "max": 100,
-          "text": "Well done, looks like you've got a good handle on knowing your gambling myths."
+          "min": 7,
+          "max": 8,
+          "text": "Well done! It looks like you've got a good handle on understanding gambling myths."
         }
       ]
     },
     "cta1": {
-      "text": "Enter to win a $100 VISA gift card. Use it on some non-gambling activities as a reminder to balance gambling with other hobbies.",
-      "buttonText": "Enter now",
-      "buttonLink": "https://www.bclc.com/en/responsible-gaming/responsible-gaming-resources/game-sense-quiz"
+      "text": "Want to continue learning about healthy gambling habits? Get tips, tools and resources to help you keep gambling fun.",
+      "buttonText": "Learn more",
+      "buttonLink": "https://gamesense.com/play-better.html"
+    },
+    "cta2": {
+      "text": "Enter for your chance to win a Fitbit Luxe Smartwatch*! Think of it as our friendly reminder to balance gambling with other healthy habits.",
+      "buttonText": "Enter contest",
+      "buttonLink": "TBD"
     },
     "footer": {
       "text": "Want to continue learning about healthy gambling habits?",
