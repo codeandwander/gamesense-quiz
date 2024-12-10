@@ -93,7 +93,7 @@
               <button @click="nextQuestion" :disabled="!showResults"
                 class="bg-[#76B900] text-white px-5 py-2 text-lg rounded disabled:opacity-50 disabled:cursor-not-allowed"
                 :class="{'hover:bg-[#86C100]': showResults}">
-                Next question
+                {{ isLastQuestion ? 'Submit answers' : 'Next question' }}
               </button>
             </div>
           </div>
@@ -123,12 +123,12 @@
 
             <!-- CTAs -->
             <div class="flex flex-col gap-4">
-              <div v-if="quizData.endFrame.cta1.text || quizData.endFrame.cta1.buttonText">
-                <p class="mb-8">{{ quizData.endFrame.cta1.text }}</p>
-                <a v-if="quizData.endFrame.cta1.buttonText" :href="quizData.endFrame.cta1.buttonLink" target="_blank"
+              <div v-if="quizData.endFrame.cta2.text || quizData.endFrame.cta2.buttonText">
+                <p class="mb-8">{{ quizData.endFrame.cta2.text }}</p>
+                <a v-if="quizData.endFrame.cta2.buttonText" :href="quizData.endFrame.cta2.buttonLink" target="_blank"
                   rel="noopener noreferrer"
                   class="bg-[#76B900] text-white px-6 py-3 font-medium hover:bg-[#86C100] rounded inline-block">
-                  {{ quizData.endFrame.cta1.buttonText }}
+                  {{ quizData.endFrame.cta2.buttonText }}
                 </a>
               </div>
             </div>

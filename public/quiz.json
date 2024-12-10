@@ -101,8 +101,8 @@
         }
       ],
       "responses": {
-        "correct": "Exactly. Without setting a budget before playing, it can be easy to lose more money than planned. Keep gambling fun by only playing with money you can afford to lose and sticking to your limit.",
-        "incorrect": "Actually without setting a budget before playing, it can be easy to lose more money than planned. Keep gambling fun by only playing with money you can afford to lose and sticking to your limit."
+        "correct": "You got it! Actually, without setting limits, it's easy to lose track of time and money while playing.",
+        "incorrect": "Actually, without setting limits, it's easy to lose track of time and money while playing."
       }
     },
     {
@@ -123,7 +123,7 @@
       }
     },
     {
-      "questionText": "Casinos has the house advantage and the odds are generally against me.",
+      "questionText": "Casinos have the house advantage and the odds are generally against me.",
       "answers": [
         {
           "text": "True",
@@ -169,7 +169,7 @@
     "cta2": {
       "text": "Enter for your chance to win a Fitbit Luxe Smartwatch*! Think of it as our friendly reminder to balance gambling with other healthy habits.",
       "buttonText": "Enter contest",
-      "buttonLink": "TBD"
+      "buttonLink": "https://gamesense.splashdot.com/"
     },
     "footer": {
       "text": "Want to continue learning about healthy gambling habits?",
