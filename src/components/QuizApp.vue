@@ -1,11 +1,16 @@
 // QuizApp.vue
 <template>
   <div class="quiz-container bg-[#F3F6F5] font-fort"
-    :class="{'bg-[#76B900] bg-repeat text-balance': currentStep === 'start'}"
-    :style="{ backgroundImage: currentStep === 'start' ? `url(${quizData.backgroundImage})` : 'none' }">
+    :class="{'bg-[#76B900] bg-repeat text-balance': currentStep === 'start' && isQuizDataLoaded}"
+    :style="{ backgroundImage: currentStep === 'start' && quizData ? `url(${quizData.backgroundImage})` : 'none' }">
     <div class="relative max-w-3xl mx-auto h-screen flex flex-col justify-center items-center">
+      <!-- Loading State -->
+      <div v-if="isLoading" class="text-center p-8 md:p-16">
+        <p class="text-2xl">Loading quiz...</p>
+      </div>
+
       <!-- Opening Frame -->
-      <div v-if="currentStep === 'start'" class="text-center p-8 md:p-16">
+      <div v-else-if="currentStep === 'start' && quizData" class="text-center p-8 md:p-16">
         <h1 class="text-5xl font-bold px-4 text-white mb-6 font-gameSense-hand">
           {{ quizData.title }}
         </h1>
@@ -114,32 +119,28 @@
           <h2 class="text-[#4A4A4A] text-4xl mb-8 text-center text-balance">{{ quizData.endFrame.text }}</h2>
 
           <div class="p-8 bg-[#154734] text-white rounded mb-4">
-
             <div class="text-lg mb-1 text-[#76B900]">
               You got {{ correctAnswers }} out of {{ quizData.questions.length }} questions correct
             </div>
 
             <p class="mb-6 text-2xl font-medium">{{ getScoreResponse() }}</p>
 
-            <!-- CTAs -->
-            <div class="flex flex-col gap-4">
-              <div v-if="quizData.endFrame.cta2.text || quizData.endFrame.cta2.buttonText">
-                <p class="mb-8">{{ quizData.endFrame.cta2.text }}</p>
-                <a v-if="quizData.endFrame.cta2.buttonText" :href="quizData.endFrame.cta2.buttonLink" target="_blank"
-                  rel="noopener noreferrer"
-                  class="bg-[#76B900] text-white px-6 py-3 font-medium hover:bg-[#86C100] rounded inline-block">
-                  {{ quizData.endFrame.cta2.buttonText }}
-                </a>
-              </div>
+            <div class="flex flex-col items-center gap-1">
+              <span class="text-balance mb-4">{{ quizData.endFrame.cta1.text }}</span>
+              <a v-if="quizData.endFrame.cta1.buttonText" :href="quizData.endFrame.cta1.buttonLink" target="_blank"
+                rel="noopener noreferrer"
+                class="bg-[#76B900] text-white px-6 py-3 font-medium hover:bg-[#86C100] rounded inline-block">
+                {{ quizData.endFrame.cta1.buttonText }}
+              </a>
             </div>
           </div>
 
           <div
-            class="px-4 py-8 bg-white flex flex-col gap-1 items-center justify-center text-[#4A4A4A] rounded text-balance">
-            <span class="font-medium">{{ quizData.endFrame.footer.text }}</span>
-            <span class="">{{ quizData.endFrame.footer.subtext }}</span>
-            <a :href="quizData.endFrame.footer.buttonLink" class="font-medium text-[#86C100]">{{
-              quizData.endFrame.footer.buttonText }}</a>
+            class="px-4 py-8 bg-white items-center justify-center text-[#4A4A4A] rounded text-balance">
+            <!-- CTA -->
+            <p class="mb-4">{{ quizData.endFrame.cta2.text }}</p>
+            <a :href="quizData.endFrame.cta2.buttonLink" class="font-medium text-[#86C100]">{{
+              quizData.endFrame.cta2.buttonText }}</a>
           </div>
         </div>
       </div>
@@ -149,8 +150,64 @@
   </div>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import { defineComponent } from 'vue'
+
+interface Answer {
+  text: string;
+  isCorrect: boolean;
+}
+
+interface Question {
+  questionText: string;
+  image?: string;
+  answers: Answer[];
+  responses: {
+    correct: string;
+    incorrect: string;
+  };
+}
+
+interface ScoreRange {
+  min: number;
+  max: number;
+  text: string;
+}
+
+interface ScoreResponses {
+  sameForAll: boolean;
+  text?: string;
+  ranges?: ScoreRange[];
+}
+
+interface CTAButton {
+  text: string;
+  buttonText?: string;
+  buttonLink?: string;
+}
+
+interface EndFrame {
+  text: string;
+  scoreResponses: ScoreResponses;
+  cta1: CTAButton;
+  cta2: CTAButton;
+}
+
+interface QuizData {
+  title: string;
+  backgroundImage: string;
+  gtmId: string;
+  questions: Question[];
+  endFrame: EndFrame;
+}
+
+interface UserAnswer {
+  questionIndex: number;
+  selectedAnswer: number;
+  isCorrect: boolean;
+}
+
+export default defineComponent({
   name: 'QuizApp',
   props: {
     quizSource: {
@@ -160,36 +217,58 @@ export default {
   },
   data() {
     return {
-      quizData: null,
-      currentStep: 'start',
+      quizData: null as QuizData | null,
+      currentStep: 'start' as 'start' | 'question' | 'end',
       currentQuestionIndex: 0,
-      selectedAnswer: null,
+      selectedAnswer: null as number | null,
       showResults: false,
-      userAnswers: [],
+      userAnswers: [] as UserAnswer[],
       correctAnswers: 0,
       showMenu: false,
       showAboutModal: false,
+      isLoading: true,
     }
   },
   computed: {
-    currentQuestion() {
-      return this.quizData?.questions[this.currentQuestionIndex] || {}
+    isQuizDataLoaded(): boolean {
+      return this.quizData !== null;
     },
-    isLastQuestion() {
-      return this.currentQuestionIndex === this.quizData?.questions.length - 1
+    currentQuestion(): Question {
+      if (!this.quizData) {
+        return {
+          questionText: "Loading...",
+          answers: [],
+          responses: { correct: "", incorrect: "" }
+        };
+      }
+      const question = this.quizData.questions[this.currentQuestionIndex];
+      return question || {
+        questionText: "Default Question",
+        answers: [{ text: "Default Answer", isCorrect: false }],
+        responses: { correct: "Correct!", incorrect: "Try again!" }
+      };
+    },
+    isLastQuestion(): boolean {
+      return this.quizData ? this.currentQuestionIndex === this.quizData.questions.length - 1 : false;
     }
   },
   methods: {
-    async loadQuizData() {
+    async loadQuizData(): Promise<void> {
       try {
         const response = await fetch(this.quizSource)
         this.quizData = await response.json()
+
+        if(!this.quizData) {
+          throw new Error('Failed to load quiz data')
+        }
+
         this.initializeGTM(this.quizData.gtmId)
+        this.isLoading = false
       } catch (error) {
         console.error('Error loading quiz data:', error)
       }
     },
-    initializeGTM(gtmId) {
+    initializeGTM(gtmId: string): void {
       // Create and inject GTM script
       const script = document.createElement('script')
       script.innerHTML = `
@@ -213,7 +292,7 @@ export default {
       noscript.appendChild(iframe)
       document.body.insertBefore(noscript, document.body.firstChild)
     },
-    startQuiz() {
+    startQuiz(): void {
       this.currentStep = 'question'
       this.currentQuestionIndex = 0
       this.userAnswers = []
@@ -228,7 +307,7 @@ export default {
         'step_response': 'start'
       })
     },
-    selectAnswer(index) {
+    selectAnswer(index: number): void {
       if (this.showResults) return
       this.selectedAnswer = index
       this.showResults = true
@@ -252,11 +331,11 @@ export default {
         'step_response': this.currentQuestion.answers[index].text
       })
     },
-    nextQuestion() {
+    nextQuestion(): void {
       this.showResults = false
       this.selectedAnswer = null
       
-      if (this.isLastQuestion) {
+      if (this.quizData && this.isLastQuestion) {
         this.currentStep = 'end'
         // Track quiz completion
         window.dataLayer.push({
@@ -270,52 +349,57 @@ export default {
         this.currentQuestionIndex++
       }
     },
-    getScoreResponse() {
+    getScoreResponse(): string {
+      if (!this.quizData) {
+        return ''
+      }
+
       const scoreResponses = this.quizData.endFrame.scoreResponses
       const correctAnswers = this.correctAnswers
       
       if (scoreResponses.sameForAll) {
-        return scoreResponses.text
+        return scoreResponses.text || ''
       }
       
       // Find appropriate response based on absolute score ranges
-      return scoreResponses.ranges.find(range => 
+      return scoreResponses.ranges?.find(range => 
         correctAnswers >= range.min && correctAnswers <= range.max
       )?.text || ''
     },
-    toggleMenu() {
+    toggleMenu(): void {
       this.showMenu = !this.showMenu
     },
-    handleStartOver() {
+    handleStartOver(): void {
       this.showMenu = false
       this.startQuiz()
     },
-    handleAboutClick() {
+    handleAboutClick(): void {
       this.showMenu = false
       this.showAboutModal = true
     },
-    getResponseText() {
-      const isCorrect = this.currentQuestion.answers[this.selectedAnswer].isCorrect
+    getResponseText(): string {
+      const isCorrect = this.currentQuestion.answers[this.selectedAnswer as number].isCorrect
       return isCorrect ? 
         this.currentQuestion.responses.correct : 
         this.currentQuestion.responses.incorrect
     },
+    handleClickOutside(event: MouseEvent): void {
+      const isMenuContainer = (event.target as HTMLElement).closest('.menu-container');
+      if (!isMenuContainer && this.showMenu) {
+        this.showMenu = false;
+      }
+    }
   },
-  created() {
+  created(): void {
     this.loadQuizData()
   },
-  mounted() {
+  mounted(): void {
     // Update click outside handler
-    document.addEventListener('click', (e) => {
-      const isMenuContainer = e.target.closest('.menu-container')
-      if (!isMenuContainer && this.showMenu) {
-        this.showMenu = false
-      }
-    })
+    document.addEventListener('click', this.handleClickOutside)
   },
-  beforeUnmount() {
+  beforeUnmount(): void {
     // Clean up event listener
     document.removeEventListener('click', this.handleClickOutside)
   }
-}
+})
 </script>

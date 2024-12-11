@@ -101,8 +101,8 @@
         }
       ],
       "responses": {
-        "correct": "You got it! Actually, without setting limits, it's easy to lose track of time and money while playing.",
-        "incorrect": "Actually, without setting limits, it's easy to lose track of time and money while playing."
+        "correct": "You got it! Actually, without setting limits it's easy to lose track of time and money while playing.",
+        "incorrect": "Actually, without setting limits it's easy to lose track of time and money while playing."
       }
     },
     {
@@ -169,12 +169,6 @@
     "cta2": {
       "text": "Enter for your chance to win a Fitbit Luxe Smartwatch*! Think of it as our friendly reminder to balance gambling with other healthy habits.",
       "buttonText": "Enter contest",
-      "buttonLink": "https://gamesense.splashdot.com/"
-    },
-    "footer": {
-      "text": "Want to continue learning about healthy gambling habits?",
-      "subtext": "Get tips, tools and resources to help you keep gambling fun.",
-      "buttonText": "Learn more",
       "buttonLink": "https://www.bclc.com/en/responsible-gaming/responsible-gaming-resources/game-sense-quiz"
     }
   }

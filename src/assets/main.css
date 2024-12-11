@@ -1,3 +1,15 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "./base.css";
+
+body {
+    margin: 0;
+    line-height: 1.5;
+}
+
+#quiz-app button {
+    cursor: pointer;
+    line-height: 1.5;
+}
+
+#quiz-app a {
+    text-decoration: none;
+}

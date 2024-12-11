@@ -1,5 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
+  important: "#quiz-app",
   content: [
     "./index.html",
     "./src/**/*.{vue,js,ts,jsx,tsx}",
@@ -12,5 +13,7 @@ module.exports = {
       },
     },
   },
-  plugins: [],
+  corePlugins: {
+    preflight: false,
+  }
 }
