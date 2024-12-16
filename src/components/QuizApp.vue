@@ -156,16 +156,13 @@ import { defineComponent } from 'vue'
 interface Answer {
   text: string;
   isCorrect: boolean;
+  response: string;
 }
 
 interface Question {
   questionText: string;
   image?: string;
   answers: Answer[];
-  responses: {
-    correct: string;
-    incorrect: string;
-  };
 }
 
 interface ScoreRange {
@@ -217,55 +214,52 @@ export default defineComponent({
   },
   data() {
     return {
-      quizData: null as QuizData | null,
+      quizData: {} as QuizData,
+      isLoading: true,
       currentStep: 'start' as 'start' | 'question' | 'end',
       currentQuestionIndex: 0,
       selectedAnswer: null as number | null,
       showResults: false,
-      userAnswers: [] as UserAnswer[],
       correctAnswers: 0,
+      userAnswers: [] as UserAnswer[],
       showMenu: false,
-      showAboutModal: false,
-      isLoading: true,
+      showAboutModal: false
     }
   },
   computed: {
     isQuizDataLoaded(): boolean {
-      return this.quizData !== null;
+      return Object.keys(this.quizData).length > 0
     },
     currentQuestion(): Question {
-      if (!this.quizData) {
+      if (!this.isQuizDataLoaded) {
         return {
           questionText: "Loading...",
           answers: [],
-          responses: { correct: "", incorrect: "" }
         };
       }
-      const question = this.quizData.questions[this.currentQuestionIndex];
-      return question || {
-        questionText: "Default Question",
-        answers: [{ text: "Default Answer", isCorrect: false }],
-        responses: { correct: "Correct!", incorrect: "Try again!" }
-      };
+      return this.quizData.questions[this.currentQuestionIndex];
     },
     isLastQuestion(): boolean {
-      return this.quizData ? this.currentQuestionIndex === this.quizData.questions.length - 1 : false;
+      return this.currentQuestionIndex === this.quizData.questions.length - 1;
     }
   },
   methods: {
     async loadQuizData(): Promise<void> {
       try {
-        const response = await fetch(this.quizSource)
-        this.quizData = await response.json()
-
-        if(!this.quizData) {
-          throw new Error('Failed to load quiz data')
+        const response = await fetch(this.quizSource);
+        if (!response.ok) {
+          throw new Error('Failed to load quiz data');
         }
-
-        this.initializeGTM(this.quizData.gtmId)
-        this.isLoading = false
+        const data = await response.json();
+        this.quizData = data as QuizData;
+        this.isLoading = false;
+        
+        if (this.quizData.gtmId) {
+          this.initializeGTM(this.quizData.gtmId);
+        }
       } catch (error) {
-        console.error('Error loading quiz data:', error)
+        console.error('Error loading quiz data:', error);
+        this.isLoading = false;
       }
     },
     initializeGTM(gtmId: string): void {
@@ -378,10 +372,8 @@ export default defineComponent({
       this.showAboutModal = true
     },
     getResponseText(): string {
-      const isCorrect = this.currentQuestion.answers[this.selectedAnswer as number].isCorrect
-      return isCorrect ? 
-        this.currentQuestion.responses.correct : 
-        this.currentQuestion.responses.incorrect
+      if (!this.showResults || this.selectedAnswer === null) return '';
+      return this.currentQuestion.answers[this.selectedAnswer].response;
     },
     handleClickOutside(event: MouseEvent): void {
       const isMenuContainer = (event.target as HTMLElement).closest('.menu-container');
